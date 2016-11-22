@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <!-- 用了spring，struts的类名不用写全类名，而是按照spring里面的id来对照 -->
+    <package name="shop" extends="struts-default">
+        <global-results>
+            <result name="msg">/WEB-INF/jsp/msg.jsp</result>
+        </global-results>
+        <!-- 全局视图
+        <global-results>
+            <result name="success">/index.jsp</result>
+            <result name="error">/error/error.jsp</result>
+        </global-results>-->
+        <!-- 全局异常
+        <global-exception-mappings>-->
+        <!-- result会找全局视图
+        <exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+    </global-exception-mappings>-->
+        <!-- action实例交给spring容器创建 -->
+        <!-- 把页面防在web-inf下防止外界直接访问破坏页面，把公共资源如图片直接放在webroot下-->
+        <action name="index" class="indexAction">
+            <result name="index">/WEB-INF/jsp/index.jsp</result>
+        </action>
+        <!-- 用户模块的action -->
+        <action name="user_*" class="userAction" method="{1}">
+            <result name="registPage">/WEB-INF/jsp/regist.jsp</result>
+            <!-- 配置名为input的逻辑视图，当校验失败后转入该逻辑视图 -->
+            <result name="input">/WEB-INF/jsp/regist.jsp</result>
+            <!-- 跳转到登陆页面 -->
+            <result name="loginPage">/WEB-INF/jsp/login.jsp</result>
+            <!-- 登陆失败后跳转 -->
+            <result name="login">/WEB-INF/jsp/login.jsp</result>
+            <!-- 登陆成功后跳转 -->
+            <result name="loginSuccess" type="redirectAction">index</result>
+            <!-- 退出用户跳转回首页 -->
+            <result name="quit" type="redirectAction">index</result>
+
+        </action>
+
+        <!-- 验证码Action -->
+        <action name="checkImg" class="checkImgAction" ></action>
+    </package>
+
+</struts>

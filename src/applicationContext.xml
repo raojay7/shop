@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 配置连接池: -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/shop_sys"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+        <property name="initialPoolSize" value="3"/>
+        <property name="maxPoolSize" value="6"/>
+    </bean>
+
+    <!-- Hibernate的相关信息 -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <!-- 注入连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置Hibernate的其他的属性 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <!-- 配置Hibernate的映射文件 -->
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:rj/user/entity/*.hbm.xml</value>
+                <value>classpath:rj/category/entity/*.hbm.xml</value>
+                <value>classpath:rj/categorysecond/entity/*.hbm.xml</value>
+                <value>classpath:rj/product/entity/*.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 事务管理: -->
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 开启注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- Action的配置 ===========================-->
+
+    <!-- 首页访问的Action -->
+    <bean id="indexAction" class="rj.index.IndexAction" scope="prototype">
+        <property name="categoryService" ref="categoryService"/>
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <!-- 配置验证码Action-->
+    <bean id="checkImgAction" class="rj.user.action.CheckImgAction" scope="prototype">
+
+    </bean>
+
+    <!-- 用户模块的Action -->
+    <bean id="userAction" class="rj.user.action.UserAction" scope="prototype">
+        <!-- 注入Service -->
+        <property name="userService" ref="userService"/>
+    </bean>
+    <!--一级分类模块的Action-->
+    <bean id="categoryAction" class="rj.category.action.CategoryAction" scope="prototype">
+        <property name="categoryService" ref="categoryService"/>
+    </bean>
+
+    <bean id="productAction" class="rj.product.action.ProductAction">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <!-- Service的配置  ===========================-->
+    <bean id="userService" class="rj.user.service.impl.UserService">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="categoryService" class="rj.category.service.CategoryService">
+        <property name="categoryDao" ref="categoryDao"/>
+    </bean>
+
+    <bean id="productService" class="rj.product.service.ProductService">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+
+
+    <!-- Dao的配置  ===========================-->
+    <bean id="userDao" class="rj.user.dao.impl.UserDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--一级分类的配置-->
+    <bean id="categoryDao" class="rj.category.dao.CategoryDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--二级分类的配置-->
+    <!--商品的配置-->
+    <bean id="productDao" class="rj.product.dao.ProductDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+</beans>
