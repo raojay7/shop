@@ -75,13 +75,16 @@
         <!-- 注入Service -->
         <property name="userService" ref="userService"/>
     </bean>
+
     <!--一级分类模块的Action-->
     <bean id="categoryAction" class="rj.category.action.CategoryAction" scope="prototype">
         <property name="categoryService" ref="categoryService"/>
     </bean>
 
+    <!--商品的action-->
     <bean id="productAction" class="rj.product.action.ProductAction">
         <property name="productService" ref="productService"/>
+        <property name="categoryService" ref="categoryService"/>
     </bean>
 
     <!-- Service的配置  ===========================-->

@@ -41,7 +41,7 @@
 		<s:iterator value="#session.clist" var="c" >
 
             <!-- 应该加入连接的各个href-->
-			<li><a href="./蔬菜分类.htm"><s:property value="#c.cname"></s:property> </a> |</li>
+			<li><a href="${pageContext.request.contextPath}/product_findByCid?cid=<s:property value="#c.cid"/>&page=1"><s:property value="#c.cname"></s:property> </a> |</li>
 		</s:iterator>
 	</ul>
 </div>

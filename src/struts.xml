@@ -20,6 +20,8 @@
         <exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
     </global-exception-mappings>-->
         <!-- action实例交给spring容器创建 -->
+
+
         <!-- 把页面防在web-inf下防止外界直接访问破坏页面，把公共资源如图片直接放在webroot下-->
         <action name="index" class="indexAction">
             <result name="index">/WEB-INF/jsp/index.jsp</result>
@@ -42,6 +44,14 @@
 
         <!-- 验证码Action -->
         <action name="checkImg" class="checkImgAction" ></action>
+
+        <!--product的action-->
+        <action name="product_*" class="productAction" method="{1}">
+            <result name="findByPid">/WEB-INF/jsp/product.jsp</result>
+            <result name="findByCid">/WEB-INF/jsp/productList.jsp</result>
+            <result name="findByCsid">/WEB-INF/jsp/productList.jsp</result>
+
+        </action>
     </package>
 
 </struts>
