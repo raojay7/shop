@@ -41,7 +41,7 @@
 ![标识信息](http://www.baidu.com/img/bdlogo.gif "百度logo")   
 
 ```java
-public static void main(args[] string)throw Exception//java格式
+public static void main(String []args)throw Exception//java格式
 //结束
 ```
 
