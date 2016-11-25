@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="rj.order.entity.OrderItem" table="orderitem">
+        <id name="itemid">
+            <generator class="native"/>
+        </id>
+        <property name="count"/>
+        <property name="subtotal"/>
+
+        <many-to-one name="product" class="rj.product.entity.Product" lazy="false" column="pid"/>
+        <many-to-one name="order" class="rj.order.entity.Order" lazy="false" column="oid"/>
+    </class>
+
+
+
+</hibernate-mapping>

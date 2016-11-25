@@ -85,7 +85,7 @@
 						</dd>
 					</dl>
 			</div>
-			<form id="cartForm" action="${ pageContext.request.contextPath }/cart_addCart.action" method="post" >
+			<form id="cartForm" action="${ pageContext.request.contextPath }/cart_addCart" method="post" >
 				<input type="hidden" name="pid" value="<s:property value="model.pid"/>"/>
 				<div class="action">
 						<dl class="quantity">

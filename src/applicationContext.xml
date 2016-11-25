@@ -44,6 +44,8 @@
                 <value>classpath:rj/category/entity/*.hbm.xml</value>
                 <value>classpath:rj/categorysecond/entity/*.hbm.xml</value>
                 <value>classpath:rj/product/entity/*.hbm.xml</value>
+                <value>classpath:rj/order/entity/*.hbm.xml</value>
+
             </list>
         </property>
     </bean>
@@ -82,11 +84,18 @@
     </bean>
 
     <!--商品的action-->
-    <bean id="productAction" class="rj.product.action.ProductAction">
+    <bean id="productAction" class="rj.product.action.ProductAction" scope="prototype">
         <property name="productService" ref="productService"/>
         <property name="categoryService" ref="categoryService"/>
     </bean>
-
+    <!--购物车的action-->
+    <bean id="cartAction" class="rj.cart.action.CartAction" scope="prototype">
+        <property name="productService" ref="productService"/>
+    </bean>
+    <!--订单的action-->
+    <bean id="orderAction" class="rj.order.action.OrderAction" scope="prototype">
+        <property name="orderService" ref="orderService"/>
+    </bean>
     <!-- Service的配置  ===========================-->
     <bean id="userService" class="rj.user.service.impl.UserService">
         <property name="userDao" ref="userDao"/>
@@ -98,7 +107,9 @@
     <bean id="productService" class="rj.product.service.ProductService">
         <property name="productDao" ref="productDao"/>
     </bean>
-
+    <bean id="orderService" class="rj.order.service.OrderService">
+        <property name="orderDao" ref="orderDao"/>
+    </bean>
 
     <!-- Dao的配置  ===========================-->
     <bean id="userDao" class="rj.user.dao.impl.UserDao">
@@ -111,6 +122,10 @@
     <!--二级分类的配置-->
     <!--商品的配置-->
     <bean id="productDao" class="rj.product.dao.ProductDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="orderDao" class="rj.order.dao.OrderDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>

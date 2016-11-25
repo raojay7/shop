@@ -8,6 +8,7 @@
     <package name="shop" extends="struts-default">
         <global-results>
             <result name="msg">/WEB-INF/jsp/msg.jsp</result>
+            <result name="login">/WEB-INF/jsp/login.jsp</result>
         </global-results>
         <!-- 全局视图
         <global-results>
@@ -50,6 +51,19 @@
             <result name="findByPid">/WEB-INF/jsp/product.jsp</result>
             <result name="findByCid">/WEB-INF/jsp/productList.jsp</result>
             <result name="findByCsid">/WEB-INF/jsp/productList.jsp</result>
+
+        </action>
+        <!--购物车模块的action-->
+        <action name="cart_*" class="cartAction" method="{1}">
+            <result name="addCart">/WEB-INF/jsp/cart.jsp</result>
+            <result name="clearCart">/WEB-INF/jsp/cart.jsp</result>
+            <result name="removeCart">/WEB-INF/jsp/cart.jsp</result>
+            <result name="myCart">/WEB-INF/jsp/cart.jsp</result>
+        </action>
+        <action name="order_*" class="orderAction" method="{1}">
+            <result name="saveSuccess">/WEB-INF/jsp/order.jsp</result>
+            <result name="findByUidSuccess">/WEB-INF/jsp/orderList.jsp</result>
+            <result name="findByOidSuccess">/WEB-INF/jsp/order.jsp</result>
 
         </action>
     </package>
