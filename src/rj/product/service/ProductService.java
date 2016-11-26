@@ -107,4 +107,50 @@ public class ProductService {
         pageBean.setList(list);
         return pageBean;
     }
+
+    public PageBean<Product> findByPage(Integer page) {
+        //创建pagebean对象
+        PageBean<Product> pageBean=new PageBean<Product>();
+        //设置当前页
+        pageBean.setPage(page);
+
+        //设置总数据数
+        int total=0;
+        //调用dao的查询总数据数的方法
+        total=productDao.findCount();
+        pageBean.setTotal(total);
+
+        //设置一页显示多少
+        int limit=8;
+        pageBean.setLimit(limit);
+
+        //设置总页数
+        int totalPage=0;
+        if(total % limit == 0){
+            totalPage = total / limit;
+        }else{
+            totalPage = total / limit + 1;
+        }
+        pageBean.setTotalPage(totalPage);
+
+        // 每页显示的数据集合:
+        // 从哪开始:
+        int begin=(page-1)*limit;
+        //根据二级分类直接查询到商品，并封装数据到pagebean的list中
+        List<Product> list = productDao.findByPage(begin,limit);
+        pageBean.setList(list);
+        return pageBean;
+    }
+
+    public void save(Product product) {
+        productDao.save(product);
+    }
+
+    public void delete(Product p) {
+        productDao.delete(p);
+    }
+
+    public void update(Product product) {
+        productDao.update(product);
+    }
 }

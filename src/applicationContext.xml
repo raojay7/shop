@@ -45,6 +45,7 @@
                 <value>classpath:rj/categorysecond/entity/*.hbm.xml</value>
                 <value>classpath:rj/product/entity/*.hbm.xml</value>
                 <value>classpath:rj/order/entity/*.hbm.xml</value>
+                <value>classpath:rj/adminuser/entity/*.hbm.xml</value>
 
             </list>
         </property>
@@ -96,6 +97,26 @@
     <bean id="orderAction" class="rj.order.action.OrderAction" scope="prototype">
         <property name="orderService" ref="orderService"/>
     </bean>
+    <!--管理员模块的action-->
+    <bean id="adminUserAction" class="rj.adminuser.action.AdminUserAction" scope="prototype">
+        <property name="adminUserService" ref="adminUserService"/>
+    </bean>
+
+    <!--管理员对一级分类的操作，不分页-->
+    <bean id="adminCategoryAction" class="rj.category.action.adminaction.AdminCategoryAction" scope="prototype">
+        <property name="categoryService" ref="categoryService"/>
+    </bean>
+    <!--管理员对二级分类的操作，分页-->
+    <bean id="adminCategorySecondAction" class="rj.categorysecond.action.AdminCategorySecondAction" scope="prototype">
+        <property name="categorySecondService" ref="categorySecondService"/>
+        <property name="categoryService" ref="categoryService"/>
+    </bean>
+
+    <!--管理员对商品的操作，分页-->
+    <bean id="adminProductAction" class="rj.product.action.AdminProductAction">
+        <property name="productService" ref="productService"/>
+        <property name="categorySecondService" ref="categorySecondService"/>
+    </bean>
     <!-- Service的配置  ===========================-->
     <bean id="userService" class="rj.user.service.impl.UserService">
         <property name="userDao" ref="userDao"/>
@@ -109,6 +130,14 @@
     </bean>
     <bean id="orderService" class="rj.order.service.OrderService">
         <property name="orderDao" ref="orderDao"/>
+    </bean>
+
+    <bean id="adminUserService" class="rj.adminuser.service.AdminUserService">
+        <property name="adminUserDao" ref="adminUserDao"/>
+    </bean>
+    <!--二级分类service-->
+    <bean id="categorySecondService" class="rj.categorysecond.service.CategorySecondService">
+        <property name="categorySecondDao" ref="categorySecondDao"/>
     </bean>
 
     <!-- Dao的配置  ===========================-->
@@ -126,6 +155,14 @@
     </bean>
 
     <bean id="orderDao" class="rj.order.dao.OrderDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="adminUserDao" class="rj.adminuser.dao.AdminUserDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--管理员管理二级分类-->
+    <bean id="categorySecondDao" class="rj.categorysecond.dao.CategorySecondDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>

@@ -21,4 +21,19 @@ public class CategoryService {
     public List<Category> findAll() {
        return categoryDao.findAll();
     }
+
+    public void save(Category c) {
+        categoryDao.save(c);
+    }
+
+    public void delete(Integer cid) {
+        categoryDao.delete(cid);
+    }
+    public Category findByCid(Integer cid) {
+       return categoryDao.findByCid(cid);
+    }
+
+    public void update(Category category) {
+        categoryDao.update(category);
+    }
 }
