@@ -117,6 +117,12 @@
         <property name="productService" ref="productService"/>
         <property name="categorySecondService" ref="categorySecondService"/>
     </bean>
+
+
+    <!--管理员对订单的操作-->
+    <bean id="adminOrderAction" class="rj.order.action.AdminOrderAction">
+        <property name="orderService" ref="orderService"/>
+    </bean>
     <!-- Service的配置  ===========================-->
     <bean id="userService" class="rj.user.service.impl.UserService">
         <property name="userDao" ref="userDao"/>

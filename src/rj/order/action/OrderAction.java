@@ -99,4 +99,14 @@ public class OrderAction extends ActionSupport implements ModelDriven<Order>{
         order=orderService.findByOid(order.getOid());
         return "findByOidSuccess";
     }
+
+    //前台确认收货
+    public String updateState(){
+
+        order=orderService.findByOid(order.getOid());
+        //修改订单状态
+        order.setState(4);
+        orderService.update(order);
+        return "updateStateSuccess";
+    }
 }

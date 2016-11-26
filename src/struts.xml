@@ -6,9 +6,17 @@
 <struts>
     <!-- 用了spring，struts的类名不用写全类名，而是按照spring里面的id来对照 -->
     <package name="shop" extends="struts-default">
+        <!-- 配置自定义拦截器 -->
+        <interceptors>
+            <interceptor name="privilegeInterceptor" class="rj.interceptor.PrivilegeInterceptor"/>
+
+        </interceptors>
+
+
         <global-results>
             <result name="msg">/WEB-INF/jsp/msg.jsp</result>
             <result name="login">/WEB-INF/jsp/login.jsp</result>
+            <result name="loginFail">/admin/index.jsp</result>
         </global-results>
         <!-- 全局视图
         <global-results>
@@ -60,18 +68,25 @@
             <result name="removeCart">/WEB-INF/jsp/cart.jsp</result>
             <result name="myCart">/WEB-INF/jsp/cart.jsp</result>
         </action>
+        <!--前台订单模块-->
         <action name="order_*" class="orderAction" method="{1}">
             <result name="saveSuccess">/WEB-INF/jsp/order.jsp</result>
             <result name="findByUidSuccess">/WEB-INF/jsp/orderList.jsp</result>
             <result name="findByOidSuccess">/WEB-INF/jsp/order.jsp</result>
-
+            <result name="updateStateSuccess" type="redirectAction">order_findByUid?page=1</result>
         </action>
-        
+
+
+
+
         <!--后台登陆管理-->
         <action name="adminUser_*" class="adminUserAction" method="{1}">
             <result name="loginFail">/admin/index.jsp</result>
             <result name="loginSuccess">/admin/home.jsp</result>
-
+            <interceptor-ref name="privilegeInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
         <!--后台一级分类管理-->
@@ -81,7 +96,10 @@
             <result name="deleteSuccess" type="redirectAction">adminCategory_findAll</result>
             <result name="editSuccess">/admin/category/edit.jsp</result>
             <result name="updateSuccess" type="redirectAction">adminCategory_findAll</result>
-            
+            <interceptor-ref name="privilegeInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
         <!--后台二级分类管理-->
         <!-- 后台二级分类管理Action -->
@@ -92,6 +110,10 @@
             <result name="deleteSuccess" type="redirectAction">adminCategorySecond_findAll?page=1</result>
             <result name="editSuccess">/admin/categorysecond/edit.jsp</result>
             <result name="updateSuccess" type="redirectAction">adminCategorySecond_findAll?page=1</result>
+            <interceptor-ref name="privilegeInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
 
 
@@ -103,7 +125,23 @@
             <result name="deleteSuccess" type="redirectAction">adminProduct_findAll</result>
             <result name="editSuccess">/admin/product/edit.jsp</result>
             <result name="updateSuccess" type="redirectAction">adminProduct_findAll</result>
+            <interceptor-ref name="privilegeInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
         </action>
+
+        <!--后台订单管理-->
+        <action name="adminOrder_*" class="adminOrderAction" method="{1}">
+            <result name="findAll">/admin/order/list.jsp</result>
+            <result name="updateStateSuccess" type="redirectAction">adminOrder_findAll.action?page=1</result>
+            <result name="findOrderItem" >/admin/order/orderItem.jsp</result>
+            <interceptor-ref name="privilegeInterceptor">
+                <param name="excludeMethods">login</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
     </package>
 
 </struts>
