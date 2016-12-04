@@ -3,20 +3,16 @@ package rj.product.action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.apache.commons.io.FileUtils;
-import org.apache.struts2.ServletActionContext;
 import rj.categorysecond.entity.CategorySecond;
 import rj.categorysecond.service.CategorySecondService;
 import rj.product.entity.Product;
 import rj.product.service.ProductService;
+import rj.utils.FileUploadHelper;
 import rj.utils.PageBean;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import static org.apache.struts2.ServletActionContext.getServletContext;
 
 /**
  * Created by 隽 on 2016/11/26.
@@ -48,6 +44,15 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
     public void setPage(Integer page) {
         this.page = page;
     }
+
+
+
+
+
+
+
+
+
 
     /**
      * 查询所有商品方法
@@ -102,6 +107,17 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
     public String save(){
         product.setPdate(new Date());
 
+        /*********************************/
+        //只能在每个方法中使用
+        String imagesName="products";
+        FileUploadHelper helper=new FileUploadHelper(upload,uploadFileName,uploadContextType,imagesName);
+
+        String imagePath= helper.upload();
+        product.setImage(imagePath);
+        /*********************************/
+
+
+        /*
         if (upload!=null){
             //获得文件上传的磁盘路径
             String realPath= getServletContext().getRealPath("/products");
@@ -114,6 +130,7 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
             }
             product.setImage("products/"+uploadFileName);
         }
+        */
         productService.save(product);
         return "saveSuccess";
     }
@@ -122,13 +139,26 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
     public String delete(){
         //先查询再删除
         product=productService.findByPid(product.getPid());
+        /*********************************/
+        //只能在每个方法中使用
+        String imagesName="products";
+        FileUploadHelper helper=new FileUploadHelper(upload,uploadFileName,uploadContextType,imagesName);
+
+        boolean flag= helper.deleteFile(product.getImage());
+
+        /*********************************/
+
+
+
+        /*
         //删除上传的照片
         String path=product.getImage();
         if (path!=null){
-            String realPath=ServletActionContext.getServletContext().getRealPath("/"+path);
+            String realPath= ServletActionContext.getServletContext().getRealPath("/"+path);
             File file=new File(realPath);
             file.delete();
         }
+        */
         productService.delete(product);
         return "deleteSuccess";
     }
@@ -150,6 +180,20 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
         // 将信息修改到数据库
         product.setPdate(new Date());
 
+
+        /*********************************/
+        //只能在每个方法中使用
+        String imagesName="products";
+        FileUploadHelper helper=new FileUploadHelper(upload,uploadFileName,uploadContextType,imagesName);
+        String imagePath= helper.updateFile(product.getImage());
+        product.setImage(imagePath);
+        /*********************************/
+
+
+
+
+
+        /*
         // 上传:
         if(upload != null ){
             //先删除原来的图片
@@ -164,14 +208,16 @@ public class AdminProductAction extends ActionSupport implements ModelDriven<Pro
             // 创建文件类型对象:
             File diskFile = new File(path + "//" + uploadFileName);
             // 文件上传:
-            try {
+            // try {
                 FileUtils.copyFile(upload, diskFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
 
             product.setImage("products/" + uploadFileName);
         }
+        */
         productService.update(product);
         // 页面跳转
         return "updateSuccess";

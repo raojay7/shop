@@ -1,8 +1,8 @@
 package rj.adminuser.action;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.apache.struts2.ServletActionContext;
 import rj.adminuser.entity.AdminUser;
 import rj.adminuser.service.AdminUserService;
 
@@ -33,7 +33,7 @@ public class AdminUserAction extends ActionSupport implements ModelDriven<AdminU
         }
         else {
             //保存信息到action
-            ServletActionContext.getRequest().getSession().setAttribute("existAdminUser",existAdminUser);
+            ActionContext.getContext().getSession().put("existAdminUser",existAdminUser);
             return "loginSuccess";
         }
     }

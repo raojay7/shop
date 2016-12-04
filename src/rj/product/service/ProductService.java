@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import rj.product.dao.ProductDao;
 import rj.product.entity.Product;
 import rj.utils.PageBean;
+import rj.utils.PageBeanHelper;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class ProductService {
      * @return
      */
     public PageBean<Product> findByCid(Integer cid, int page) {
+        /*
         //创建pagebean对象
         PageBean<Product> pageBean=new PageBean<>();
 
@@ -71,9 +73,19 @@ public class ProductService {
         List<Product> list = productDao.findByPageCid(cid,begin,limit);
         pageBean.setList(list);
         return pageBean;
+        */
+        PageBeanHelper<Product> helper=new PageBeanHelper<>(8,page);
+        helper.setBegin();
+        //调用dao的查询总数据数的方法
+        int total=productDao.findCountCid(cid);
+        //根据二级分类直接查询到商品，并封装数据到pagebean的list中
+        List<Product> list = productDao.findByPageCid(cid,helper.getBegin(),helper.getLimit());
+        return helper.findByPageHelper(total,list);
     }
 
     public PageBean<Product> findByCsid(int csid, int page) {
+
+       /*
         //创建pagebean对象
         PageBean<Product> pageBean=new PageBean<>();
 
@@ -106,9 +118,19 @@ public class ProductService {
         List<Product> list = productDao.findByCsid(csid,begin,limit);
         pageBean.setList(list);
         return pageBean;
+
+        */
+        PageBeanHelper<Product> helper=new PageBeanHelper<>(8,page);
+        helper.setBegin();
+        //调用dao的查询总数据数的方法
+        int total=productDao.findCountCsid(csid);
+        //根据二级分类直接查询到商品，并封装数据到pagebean的list中
+        List<Product> list = productDao.findByCsid(csid,helper.getBegin(),helper.getLimit());
+        return helper.findByPageHelper(total,list);
     }
 
     public PageBean<Product> findByPage(Integer page) {
+       /*
         //创建pagebean对象
         PageBean<Product> pageBean=new PageBean<Product>();
         //设置当前页
@@ -140,6 +162,14 @@ public class ProductService {
         List<Product> list = productDao.findByPage(begin,limit);
         pageBean.setList(list);
         return pageBean;
+        */
+        PageBeanHelper<Product> helper=new PageBeanHelper<>(8,page);
+        helper.setBegin();
+        //调用dao的查询总数据数的方法
+        int total=productDao.findCount();
+        //根据二级分类直接查询到商品，并封装数据到pagebean的list中
+        List<Product> list = productDao.findByPage(helper.getBegin(),helper.getLimit());
+        return helper.findByPageHelper(total,list);
     }
 
     public void save(Product product) {
