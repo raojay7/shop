@@ -123,6 +123,10 @@
     <bean id="adminOrderAction" class="rj.order.action.AdminOrderAction">
         <property name="orderService" ref="orderService"/>
     </bean>
+    <!-- 配置后台用户管理的Action -->
+    <bean id="userAdminAction" class="rj.user.action.UserAdminAction">
+        <property name="userService" ref="userService"/>
+    </bean>
     <!-- Service的配置  ===========================-->
     <bean id="userService" class="rj.user.service.impl.UserService">
         <property name="userDao" ref="userDao"/>

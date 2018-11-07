@@ -85,6 +85,7 @@
 					<em id="promotion"></em>
 					商品金额: <strong id="effectivePrice">￥<s:property value="model.total"/>元</strong>
 				</div>
+			<!--支付功能暂未实现-->
 			<form id="orderForm" action="${ pageContext.request.contextPath }/order_payOrder.action" method="post">
 				<input type="hidden" name="oid" value="<s:property value="model.oid"/>"/>
 				<div class="span24">

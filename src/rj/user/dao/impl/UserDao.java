@@ -3,6 +3,7 @@ package rj.user.dao.impl;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import rj.user.dao.IUserDao;
 import rj.user.entity.User;
+import rj.utils.PageHibernateCallback;
 
 import java.util.List;
 /**
@@ -57,7 +58,29 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
         return null;
 
     }
+    public int findCount() {
+        String hql = "select count(*) from User";
+        List<Long> list = this.getHibernateTemplate().find(hql);
+        if (list != null && list.size() > 0) {
+            return list.get(0).intValue();
+        }
+        return 0;
+    }
 
+    public List<User> findByPage(int begin, int limit) {
+        String hql = "from User";
+        List<User> list = this.getHibernateTemplate().execute(
+            new PageHibernateCallback<User>(hql, null, begin, limit));
+        return list;
+    }
+
+    public User findByUid(Integer uid) {
+        return this.getHibernateTemplate().get(User.class, uid);
+    }
+
+    public void delete(User existUser) {
+        this.getHibernateTemplate().delete(existUser);
+    }
 
 
 }
